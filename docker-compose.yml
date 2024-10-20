@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./app
+    container_name: flask_app
+    ports:
+      - "5000:5000"  # Expose Flask app on host's port 5000
+    command: gunicorn --bind 0.0.0.0:5000 --workers 3 app:app
+    restart: always  # Ensure the app service restarts on failure/reboot
+    networks:
+      - app_network  # Connect app service to the shared network
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"  # Expose NGINX on host's port 80
+    depends_on:
+      - app
+    networks:
+      - app_network  # Connect nginx service to the shared network
+    restart: always  # Ensure the nginx service restarts on failure/reboot
+
+networks:
+  app_network:
+    driver: bridge  # Use a bridge network for internal communication
