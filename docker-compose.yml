@@ -6,7 +6,7 @@ services:
       context: ./flask_project
     container_name: flask_app
     ports:
-      - "5002:5000"  # Expose Flask app on host's port 5000
+      - "5000:5000"  # Expose Flask app on host's port 5000
     command: gunicorn --bind 0.0.0.0:5000 --workers 3 flask_app_01:flask_app_01
     restart: always  # Ensure the app service restarts on failure/reboot
     networks:
@@ -17,7 +17,7 @@ services:
       context: ./django_project
     container_name: django_app
     ports:
-      - "5003:5001"  # Expose Django app on host's port 5001
+      - "5001:5001"  # Expose Django app on host's port 5001
     command: gunicorn --bind 0.0.0.0:5001 --workers 3 django_app_01.wsgi:application
     restart: always  # Ensure the app service restarts on failure/reboot
     networks:
