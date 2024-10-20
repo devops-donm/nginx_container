@@ -10,7 +10,8 @@ services:
     command: gunicorn --bind 0.0.0.0:5000 --workers 3 flask_app_01:flask_app_01
     restart: always  # Ensure the app service restarts on failure/reboot
     networks:
-      - app_network  # Connect app service to the shared network
+      app_network:
+        ipv4_address: 172.18.0.2  # Static IP for Flask app
 
   django_app_01:
     build:
@@ -18,10 +19,11 @@ services:
     container_name: django_app
     ports:
       - "5001:5001"  # Expose Django app on host's port 5001
-    command: gunicorn --bind 0.0.0.0:5001 --workers 3 django_app_01.wsgi:application
+    command: gunicorn --bind 0.0.0.0:5001 --workers 3 core.wsgi:application
     restart: always  # Ensure the app service restarts on failure/reboot
     networks:
-      - app_network  # Connect app service to the shared network
+      app_network:
+        ipv4_address: 172.18.0.3  # Static IP for Django app
 
   nginx:
     build:
@@ -39,3 +41,6 @@ services:
 networks:
   app_network:
     driver: bridge  # Use a bridge network for internal communication
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16  # Define custom subnet for IPs
