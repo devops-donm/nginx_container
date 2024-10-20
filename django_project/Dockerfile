@@ -18,7 +18,7 @@ EXPOSE 5001
 
 # Run database migrations and collect static files (adjust if needed)
 RUN python manage.py migrate
-# RUN python manage.py collectstatic --noinput
+#RUN python manage.py collectstatic --noinput
 
 # Define the default command to run your application with Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--workers", "3", "django_app_01.wsgi:application"]
