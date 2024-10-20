@@ -1,13 +1,24 @@
 version: '3'
 
 services:
-  app:
+  flask_app_01:
     build:
       context: ./flask_project
     container_name: flask_app
     ports:
       - "5000:5000"  # Expose Flask app on host's port 5000
-    command: gunicorn --bind 0.0.0.0:5000 --workers 3 app:app
+    command: gunicorn --bind 0.0.0.0:5000 --workers 3 flask_app_01:flask_app_01
+    restart: always  # Ensure the app service restarts on failure/reboot
+    networks:
+      - app_network  # Connect app service to the shared network
+
+  django_app_01:
+    build:
+      context: ./django_project
+    container_name: django_app
+    ports:
+      - "5001:5001"  # Expose Django app on host's port 5001
+    command: gunicorn --bind 0.0.0.0:5001 --workers 3 django_app_01.wsgi:application
     restart: always  # Ensure the app service restarts on failure/reboot
     networks:
       - app_network  # Connect app service to the shared network
@@ -19,7 +30,8 @@ services:
     ports:
       - "80:80"  # Expose NGINX on host's port 80
     depends_on:
-      - app
+      - flask_app_01  # Ensure NGINX waits for Flask to be ready
+      - django_app_01  # Ensure NGINX waits for Django to be ready
     networks:
       - app_network  # Connect nginx service to the shared network
     restart: always  # Ensure the nginx service restarts on failure/reboot
