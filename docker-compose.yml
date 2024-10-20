@@ -7,7 +7,7 @@ services:
     container_name: flask_app
     ports:
       - "5000:5000"  # Expose Flask app on host's port 5000
-    command: gunicorn --bind 0.0.0.0:5000 --workers 3 flask_app_01:app
+    command: gunicorn --bind 0.0.0.0:5000 --workers 3 app:app
     restart: always  # Ensure the app service restarts on failure/reboot
     networks:
       app_network:
