@@ -1,11 +1,8 @@
 # docker
 
 ## File Structure
-env/
-│
-├── django_project/
-│   ├── Dockerfile
-│   ├── requirements.txt
+```bash
+docker/
 │
 ├── flask_project/
 │	├── Dockerfile
@@ -18,3 +15,6 @@ env/
 │	├── Dockerfile
 │   ├── requirements.txt
 │   ├── default.conf
+│
+├── docker-compose.yml
+```
