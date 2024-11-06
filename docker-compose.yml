@@ -7,8 +7,8 @@ services:
       - "80:80"    # Expose NGINX on host's port 80
       - "443:443"  # Expose NGINX on host's port 443 for HTTPS
     volumes:
-      - /opt/nginx/configs:/etc/nginx/sites-available  # Mount custom NGINX configuration
-      - /opt/nginx/certs:/etc/ssl/certs           # Mount SSL certificates
+      - /opt/docker_volume/nginx/configs:/etc/nginx/sites-available  # Mount custom NGINX configuration
+      - /opt/docker_volume/nginx/certs:/etc/ssl/certs           # Mount SSL certificates
     networks:
       - app_network  # Connect nginx service to the shared network
     restart: always  # Ensure the nginx service restarts on failure/reboot
